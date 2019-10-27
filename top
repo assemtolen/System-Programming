@@ -1,0 +1,13 @@
+#! /bin/bash
+
+# run the script like this:
+# $ chmod +x ./path/to/top
+# $ ./path/to/top 10 ./path/to/log.txt
+
+total=$(cut -d' ' -f4,9 $2|grep ' 4.*$'|cut -d' ' -f1|cut -f1 -d":"|cut -f2 -d"["|sort -f |uniq -c |sort -r -n |sed -e 's/^[[:space:]]*//' |cut -d' ' -f1|head -$1|awk '{sum+=$1} END {print sum}')
+
+x=1
+
+q=$(cut -d' ' -f4,9 $2|grep ' 4.*$'|cut -d' ' -f1|cut -f1 -d":"|cut -f2 -d"["|sed 's/\//\-/g'|date +%Y-%m-%d -f-|sort -f |uniq -c |sort -r -n |head -$1|sed -e 's/^[[:space:]]*//'| awk '{printf("%d. %s - %d - %.1f%% \n", NR,$2, $1, $1 / "'$total'" * 100)}')
+
+echo "$q"
